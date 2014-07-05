@@ -1,0 +1,15 @@
+﻿<Window x:Class="WpfSwitchClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+
+    
+    <StackPanel Orientation="Vertical">
+        
+        <Ellipse x:Name="Light" Fill="Red" Width="100" Height="100" />
+        <StackPanel Orientation="Horizontal">
+            <Button Content="On" Width="75" IsEnabled="{Binding 'CanTurnOn'}" Click="TurnOnClick" />
+            <Button Content="Off" Width="75" IsEnabled="{Binding 'CanTurnOff'}" Click="TurnOffClick"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
