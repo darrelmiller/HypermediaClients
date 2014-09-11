@@ -1,0 +1,35 @@
+﻿
+    [
+        {
+            "id": 1,
+            "status" :  "approved",
+            "description": "A hearty breakfast.",
+            "amount": 23.12,
+            "category": "meals",
+            "receiptFileName" : "Receipt1.jpg"
+        },
+        {
+            "id": 2,
+            "status" :  "unapproved",
+            "description": "Rental car to airport.",
+            "amount": 47.44,
+            "category": "transport",
+            "receiptFileName" : "DynDns.pdf"
+        },
+        {
+            "id": 3,
+            "status" :  "waiting",
+            "description": "Taxi to conference.",
+            "amount": 35.12,
+            "category": "transport"
+        },
+        {
+            "id": 4,
+            "status" :  "waiting",
+            "description": "Dell PC.",
+            "amount": 2049.23,
+            "category": "Office Equipment",
+            "receiptFileName" : "DellReceipt.jpg"
+        }
+    ]
+

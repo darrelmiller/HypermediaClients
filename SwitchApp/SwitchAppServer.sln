@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwitchApp", "SwitchApp\SwitchApp.csproj", "{DA2BCF6F-645E-4212-B69B-757B799AEE13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HypermediaAppServer", "SwitchApp\HypermediaAppServer.csproj", "{DA2BCF6F-645E-4212-B69B-757B799AEE13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

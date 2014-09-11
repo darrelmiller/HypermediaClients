@@ -1,25 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
+using System.Web.Http.Controllers;
 using System.Web.Http.SelfHost;
-using Newtonsoft.Json.Linq;
+using HypermediaAppServer.ExpenseApp;
+using HypermediaAppServer.ExpenseApp.Model;
+using HypermediaAppServer.SwitchApp;
+using Microsoft.Practices.Unity;
+using Tavis;
 
-namespace SwitchApp
+namespace HypermediaAppServer
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var serverUrl = new Uri("http://localhost:9090");
+            var serverUrl = new Uri("http://pecan:9090");
             var config = new HttpSelfHostConfiguration(serverUrl);
-            ConfigureApi(config);
+            ConfigureApi(config, serverUrl);
 
             var server = new HttpSelfHostServer(config);
 
@@ -34,82 +30,63 @@ namespace SwitchApp
             server.CloseAsync().Wait();
         }
 
-     
 
-        private static void ConfigureApi(HttpSelfHostConfiguration config)
+
+        private static void ConfigureApi(HttpSelfHostConfiguration config, Uri serverUrl)
         {
-           config.Routes.MapHttpRoute("","{controller}/{action}");
+          
+
+            var route = new TreeRoute("");
+
+            route.AddWithPath("switch/state", r => r.To<SwitchController>().ToAction("state"));
+            route.AddWithPath("switch/on", r => r.To<SwitchController>().ToAction("on"));
+            route.AddWithPath("switch/off", r => r.To<SwitchController>().ToAction("off"));
+
+            route.AddWithPath("expenseapp", r => r.To<ExpenseAppController>());
+            route.AddWithPath("expenses", r => r.To<ExpensesController>());
+            route.AddWithPath("expense/{expenseId}", r => r.To<ExpenseController>());
+            route.AddWithPath("expense/{expenseId}/approve", r => r.To<ExpenseController>().ToAction("Approve"));
+            route.AddWithPath("expense/{expenseId}/reject", r => r.To<ExpenseController>().ToAction("Reject"));
+            route.AddWithPath("receipt", r => r.To<ReceiptController>());
+
+            
+            config.Routes.Add("",route);
+            var container = config.CreateUnityContainer();
+            container.RegisterInstance<DataService>(new DataService());
+            container.RegisterInstance<IUrlFactory>(new UrlFactory(route, serverUrl));
+
         }
+
+      
     }
 
-
-    public class SwitchController : ApiController
+    public interface IUrlFactory
     {
-        public static bool SwitchState { get; set; }
-
-        [ActionName("state")]
-        public HttpResponseMessage Get()
-        {
-
-            HttpContent content;
-            if (Request.Headers.Accept.Contains(new MediaTypeWithQualityHeaderValue("application/switchstate+json")))
-            {
-                content = CreateSwitchContent();
-            }
-            else
-            {
-                content = new StringContent(SwitchState.ToString());
-            }
-
-            return new HttpResponseMessage()
-            {
-                Content = content
-            };
-        }
-
-        private static HttpContent CreateSwitchContent()
-        {
-            HttpContent content;
-            dynamic jObject = new JObject();
-            jObject.On = SwitchState.ToString();
-            if (SwitchState)
-            {
-                jObject.TurnOffLink = "switch/off";
-            }
-            else
-            {
-                jObject.TurnOnLink = "switch/on";    
-            }
-            
-            
-            content = new StringContent(jObject.ToString());
-            return content;
-        }
-
-        [ActionName("on")]
-        public HttpResponseMessage PostOn()
-        {
-            if (SwitchState == true) return new HttpResponseMessage(HttpStatusCode.BadRequest);
-            SwitchState = true;
-            Console.WriteLine("Switch is On");
-            return new HttpResponseMessage()
-            {
-                Content = CreateSwitchContent()
-            };
-        }
-
-        [ActionName("off")]
-        public HttpResponseMessage PostOff()
-        {
-            if (SwitchState == false) return new HttpResponseMessage(HttpStatusCode.BadRequest);
-
-            SwitchState = false;
-            Console.WriteLine("Switch is Off");
-            return new HttpResponseMessage()
-            {
-                Content = CreateSwitchContent()
-            };
-        }        
-    
+        Uri CreateUrl<T>() where T : IHttpController;
+        Uri CreateUrl(string relativeUri);
     }
+    public class UrlFactory : IUrlFactory
+    {
+        private readonly TreeRoute _rootRoute;
+        private readonly Uri _baseUrl;
+
+        
+        public UrlFactory(TreeRoute rootRoute, Uri baseUrl)
+        {
+            _rootRoute = rootRoute;
+            _baseUrl = baseUrl;
+        }
+
+        
+        public Uri CreateUrl(string relativeUri)
+        {
+            return new Uri(_baseUrl, relativeUri);
+        }
+        public Uri CreateUrl<T>() where T : IHttpController
+        {
+            return new Uri(_baseUrl, _rootRoute.GetUrlForController(typeof (T)));
+        }
+    }
+
+   
 }
