@@ -5,11 +5,12 @@
 
     
     <StackPanel Orientation="Vertical">
-        
+        <Border Padding="10,50,10,50"> 
         <Ellipse x:Name="Light" Fill="Red" Width="100" Height="100" />
-        <StackPanel Orientation="Horizontal">
-            <Button Content="On" Width="75" IsEnabled="{Binding 'CanTurnOn'}" Click="TurnOnClick" />
-            <Button Content="Off" Width="75" IsEnabled="{Binding 'CanTurnOff'}" Click="TurnOffClick"/>
+        </Border>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Margin="5,5,5,5" Content="On" Width="75" IsEnabled="{Binding 'CanTurnOn'}" Click="TurnOnClick" />
+            <Button Margin="5,5,5,5" Content="Off" Width="75" IsEnabled="{Binding 'CanTurnOff'}" Click="TurnOffClick"/>
         </StackPanel>
     </StackPanel>
 </Window>

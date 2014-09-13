@@ -37,7 +37,7 @@ namespace SwitchClient.Hyper
 
         public static Uri SelfLink
         {
-            get { return new Uri("switch/state", UriKind.Relative); }
+            get { return new Uri("switch", UriKind.Relative); }
         }
 
     }

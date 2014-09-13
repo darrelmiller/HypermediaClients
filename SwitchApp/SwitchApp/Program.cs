@@ -38,7 +38,7 @@ namespace HypermediaAppServer
 
             var route = new TreeRoute("");
 
-            route.AddWithPath("switch/state", r => r.To<SwitchController>().ToAction("state"));
+            route.AddWithPath("switch", r => r.To<SwitchController>());
             route.AddWithPath("switch/on", r => r.To<SwitchController>().ToAction("on"));
             route.AddWithPath("switch/off", r => r.To<SwitchController>().ToAction("off"));
 

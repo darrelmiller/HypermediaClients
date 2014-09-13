@@ -10,8 +10,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Media.Capture;
-using Windows.UI.Xaml.Controls;
+
 using Windows.UI.Xaml.Media.Imaging;
 using ExpenseApprovalApp.Links;
 using ExpenseApprovalApp.Tools;

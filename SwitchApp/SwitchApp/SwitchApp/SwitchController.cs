@@ -11,7 +11,7 @@ namespace HypermediaAppServer.SwitchApp
     {
         public static bool SwitchState { get; set; }
 
-       // [ActionName("state")]
+     
         public HttpResponseMessage Get()
         {
 
@@ -42,7 +42,10 @@ namespace HypermediaAppServer.SwitchApp
             }
             else
             {
-                jObject.TurnOnLink = "switch/on";    
+                //if (!TurtleSeason())
+                //{
+                    jObject.TurnOnLink = "switch/on";
+                //}
             }
             
             
@@ -50,10 +53,17 @@ namespace HypermediaAppServer.SwitchApp
             return content;
         }
 
+        private static bool TurtleSeason()
+        {
+            return true;
+        }
+
         [ActionName("on")]
         public HttpResponseMessage PostOn()
         {
-            if (SwitchState == true) return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            if (SwitchState == true
+               // || TurtleSeason()
+                ) return new HttpResponseMessage(HttpStatusCode.BadRequest);
             SwitchState = true;
             Console.WriteLine("Switch is On");
             return new HttpResponseMessage()

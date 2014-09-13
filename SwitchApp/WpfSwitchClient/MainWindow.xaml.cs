@@ -12,13 +12,13 @@ namespace WpfSwitchClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SwitchViewModel _model;
+        private SwitchHyperViewModel _model;
 
 
         public MainWindow(HttpClient client) : this()
         {
-            _model = new SwitchViewModel(new SwitchService(client));
-            //_model = new SwitchHyperViewModel(client);
+            //_model = new SwitchViewModel(new SwitchService(client));
+            _model = new SwitchHyperViewModel(client);
             _model.PropertyChanged += _model_PropertyChanged;
 
             DataContext = _model;

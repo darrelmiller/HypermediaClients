@@ -5,7 +5,7 @@ namespace SwitchClient
 {
     public class SwitchService
     {
-        private const string SwitchStateResource = "switch/state";
+        private const string SwitchStateResource = "switch";
         private const string SwitchOnResource = "switch/on";
         private const string SwitchOffResource = "switch/off";
 
