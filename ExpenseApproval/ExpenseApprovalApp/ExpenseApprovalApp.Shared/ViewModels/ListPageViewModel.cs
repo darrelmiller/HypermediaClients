@@ -20,7 +20,8 @@ namespace ExpenseApprovalApp.ViewModels
         public IDelegateCommand ApproveCommand { protected set; get; }
         public IDelegateCommand RejectCommand { protected set; get; }
         public IDelegateCommand DetailsCommand { protected set; get; }
-        public IDelegateCommand ReceiptCommand { protected set; get; } 
+        public IDelegateCommand ReceiptCommand { protected set; get; }
+        public event PropertyChangedEventHandler PropertyChanged;
        
         public ListPageViewModel(ClientState clientState)
         {
@@ -51,7 +52,7 @@ namespace ExpenseApprovalApp.ViewModels
 
             await _clientState.FollowLinkAsync(link);
 
-            _clientState.FollowLinkAsync(new ShowLink() { Target = link.Context });
+            await _clientState.FollowLinkAsync(new ShowLink() { Target = link.Context });
         }
 
 
@@ -62,15 +63,6 @@ namespace ExpenseApprovalApp.ViewModels
             var link = links[instance];
 
             await _clientState.FollowLinkAsync(link);
-        }
-
-        private bool HasLink(string instance, object param)
-        {
-
-            dynamic griditem = (ExpandoObject)param as ExpandoObject;
-            if (griditem == null) return false;
-            Dictionary<string, Tavis.Link> links = griditem.Links;
-            return links.ContainsKey(instance);
         }
 
         private void LoadItems(Collection collection)
@@ -105,7 +97,14 @@ namespace ExpenseApprovalApp.ViewModels
             OnPropertyChanged("Items");
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+
+        private bool HasLink(string instance, object param)
+        {
+            dynamic griditem = (ExpandoObject)param;
+            if (griditem == null) return false;
+            Dictionary<string, Tavis.Link> links = griditem.Links;
+            return links.ContainsKey(instance);
+        }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

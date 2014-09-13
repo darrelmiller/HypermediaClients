@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.UI.Xaml.Media.Imaging;
 using ExpenseApprovalApp.Tools;
 using Tavis;
@@ -22,6 +23,7 @@ namespace ExpenseApprovalApp.Links
         {
             if (!response.HasContent() && response.Content.Headers.ContentType != null) return;  // If we don't know the content-type, we can't show it
 
+
             var contentStream = await response.Content.ReadAsStreamAsync();
 
             switch (response.Content.Headers.ContentType.MediaType)
@@ -39,6 +41,14 @@ namespace ExpenseApprovalApp.Links
 
                     break;
                 case "application/pdf":
+                    var folder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                    
+                    var file = await folder.CreateFileAsync(Guid.NewGuid().ToString()+".pdf",CreationCollisionOption.ReplaceExisting);
+                    var ms = contentStream as MemoryStream;
+
+                    await FileIO.WriteBytesAsync(file, ms.ToArray());
+
+                    Windows.System.Launcher.LaunchFileAsync(file);
                     break;
             }
         }
