@@ -133,7 +133,7 @@ namespace ExpenseApprovalApp
                 if (rootFrame.CurrentSourcePageType == typeof(ListPage))
                 {
                     var listPage = rootFrame.Content as ListPage;
-                    listPage.DefaultViewModel.RefreshItems();
+                    listPage.ViewModel.RefreshItems();
                 }
                 else
                 {

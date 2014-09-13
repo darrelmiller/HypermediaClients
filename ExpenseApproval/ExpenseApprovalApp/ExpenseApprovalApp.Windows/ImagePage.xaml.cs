@@ -20,13 +20,19 @@ namespace ExpenseApprovalApp
         public ImagePage()
         {
             this.InitializeComponent();
-            DataContext = _ViewModel;
+            DataContext = ViewModel;
+        }
+
+        public ImagePageViewModel ViewModel
+        {
+            get { return _ViewModel; }
+            set { _ViewModel = value; }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             var clientState = e.Parameter as ClientState;
-            _ViewModel.LoadImage(clientState.CurrentImage);
+            ViewModel.LoadImage(clientState);
         }
 
     }

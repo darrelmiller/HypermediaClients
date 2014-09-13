@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
+using ExpenseApprovalApp.Tools;
 
 namespace ExpenseApprovalApp.ViewModels
 {
     public class ImagePageViewModel : INotifyPropertyChanged
     {
         private BitmapImage _image;
+        private ClientState _ClientState;
+        public IDelegateCommand BackCommand { protected set; get; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public BitmapImage Image
         {
@@ -21,13 +26,24 @@ namespace ExpenseApprovalApp.ViewModels
             }
         }
 
-        internal void LoadImage(Windows.UI.Xaml.Media.Imaging.BitmapImage bitmapImage)
+        public ImagePageViewModel()
         {
-            Image = bitmapImage;
+            BackCommand = new DelegateCommand(ExecuteBack);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
+        private async Task ExecuteBack(object param)
+        {
+            await _ClientState.BackAsync();
+        }
+
+        internal void LoadImage(ClientState clientState)
+        {
+            _ClientState = clientState;
+            Image = clientState.CurrentImage;
+        }
+
+        
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;

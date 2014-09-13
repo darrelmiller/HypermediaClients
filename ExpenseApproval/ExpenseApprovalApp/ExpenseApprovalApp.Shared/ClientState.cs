@@ -45,8 +45,6 @@ namespace ExpenseApprovalApp
             get { return _linkFactory; }
         }
 
-
-
         public string UserMessage
         {
             get { return _userMessage; }
@@ -87,7 +85,7 @@ namespace ExpenseApprovalApp
             }
         }
 
-
+        private Stack<Link> _History = new Stack<Link>();
 
         public ClientState(HttpClient httpClient)
         {
@@ -98,9 +96,17 @@ namespace ExpenseApprovalApp
             
         }
 
-        public Task FollowLinkAsync(Link link)
+        public async Task FollowLinkAsync(Link link)
         {
-           return ProcessResponseAsync(HttpClient.SendAsync(link.CreateRequest()));
+           await ProcessResponseAsync(HttpClient.SendAsync(link.CreateRequest()));
+           _History.Push(link); 
+        }
+
+        public async Task BackAsync()
+        {
+            _History.Pop();
+            var link = _History.Peek();
+            FollowLinkAsync(link);
         }
 
         public async Task ProcessResponseAsync(Task<HttpResponseMessage> responseTask)
