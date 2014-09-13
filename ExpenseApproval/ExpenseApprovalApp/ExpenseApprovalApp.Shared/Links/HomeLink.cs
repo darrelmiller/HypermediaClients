@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using ExpenseApprovalApp.Tools;
 using Tavis;
+using Tavis.Home;
 
 namespace ExpenseApprovalApp.Links
 {
@@ -29,5 +31,28 @@ namespace ExpenseApprovalApp.Links
             return request;
         }
 
+        public async Task ProcessHomeLinkResponse(HttpResponseMessage response, ClientState clientState)
+        {
+            if (!response.HasContent()) return;
+
+            var contentStream = await response.Content.ReadAsStreamAsync();
+
+            ShowLink showLink = null;  // Need to find a showlink to follow
+
+            switch (response.Content.Headers.ContentType.MediaType)
+            {
+                case "application/home+json":
+                    clientState.HomeDocument = HomeDocument.Parse(contentStream, clientState.LinkFactory);
+                    showLink = clientState.HomeDocument.GetResource(LinkHelper.GetLinkRelationTypeName<ShowLink>()) as ShowLink;
+                    break;
+            }
+
+            if (showLink != null)
+            {
+                await clientState.FollowLinkAsync(showLink);
+            }
+        }
     }
+
+
 }

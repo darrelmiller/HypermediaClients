@@ -19,8 +19,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Links\ActionLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Links\HomeLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Links\ShowLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\CollectionJsonHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\DelegateCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\HttpClientHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tools\RequestMessageExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tools\ResponseMessageExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ImagePageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ListPageViewModel.cs" />
   </ItemGroup>
