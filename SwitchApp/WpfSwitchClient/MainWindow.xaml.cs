@@ -17,7 +17,7 @@ namespace WpfSwitchClient
 
         public MainWindow(HttpClient client) : this()
         {
-            //_model = new SwitchViewModel(new SwitchService(client));
+           // _model = new SwitchViewModel(new SwitchService(client));
             _model = new SwitchHyperViewModel(client);
             _model.PropertyChanged += _model_PropertyChanged;
 

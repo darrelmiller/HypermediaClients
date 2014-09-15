@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpenseApprovalApp.Windows"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpenseApprovalApp.WindowsPhone", "ExpenseApprovalApp\ExpenseApprovalApp.WindowsPhone\ExpenseApprovalApp.WindowsPhone.csproj", "{DFCE1DAD-98B8-43DD-B6CD-3F947BAD0F24}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9D6F7FE0-6113-4255-9BD9-4DD4D4AAAA3F}"
+	ProjectSection(SolutionItems) = preProject
+		Notes.txt = Notes.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ExpenseApprovalApp\ExpenseApprovalApp.Shared\ExpenseApprovalApp.Shared.projitems*{82b08774-afeb-4709-bf60-69b8b3ffcca0}*SharedItemsImports = 4

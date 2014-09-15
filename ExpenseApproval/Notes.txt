@@ -1,0 +1,8 @@
+Client state
+	HTTP responses manipulate the client state
+	View models get their data
+	Easy place to save/restore application state
+
+Request and response are separated to allow the client to react to new behaviour
+
+Links encapsulate the behaviour

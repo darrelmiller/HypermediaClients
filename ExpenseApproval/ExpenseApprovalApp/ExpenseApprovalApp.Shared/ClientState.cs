@@ -10,11 +10,9 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-
 using Windows.UI.Xaml.Media.Imaging;
 using ExpenseApprovalApp.Links;
 using ExpenseApprovalApp.Tools;
-using Newtonsoft.Json;
 using Tavis;
 using Tavis.Home;
 using WebApiContrib.CollectionJson;
@@ -39,11 +37,11 @@ namespace ExpenseApprovalApp
         {
             get { return _httpClient; }
         }
-
         public LinkFactory LinkFactory
         {
             get { return _linkFactory; }
         }
+        private Stack<Link> _History = new Stack<Link>();
 
         public string UserMessage
         {
@@ -54,7 +52,6 @@ namespace ExpenseApprovalApp
                 OnPropertyChanged();
             }
         }
-
         public HomeDocument HomeDocument
         {
             get { return _homeDocument; }
@@ -64,7 +61,6 @@ namespace ExpenseApprovalApp
                 OnPropertyChanged();
             }
         }
-
         public Collection CurrentCollection
         {
             get { return _currentCollection; }
@@ -74,7 +70,6 @@ namespace ExpenseApprovalApp
                 OnPropertyChanged();
             }
         }
-
         public BitmapImage CurrentImage
         {
             get { return _currentImage; }
@@ -85,7 +80,6 @@ namespace ExpenseApprovalApp
             }
         }
 
-        private Stack<Link> _History = new Stack<Link>();
 
         public ClientState(HttpClient httpClient)
         {
