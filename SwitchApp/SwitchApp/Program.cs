@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.SelfHost;
 using HypermediaAppServer.ExpenseApp;
@@ -54,10 +58,51 @@ namespace HypermediaAppServer
             var container = config.CreateUnityContainer();
             container.RegisterInstance<DataService>(new DataService());
             container.RegisterInstance<IUrlFactory>(new UrlFactory(route, serverUrl));
-
+            config.MessageHandlers.Add(new ConsoleRequestLogger());
         }
 
       
+    }
+
+    public class ConsoleRequestLogger : DelegatingHandler
+    {
+        protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("> {0} {1}",request.Method,request.RequestUri.AbsolutePath);
+            ProcessHeader(request.Headers, (name, value) => Console.WriteLine("> {0} {1}", name, value));   
+
+            if (request.Content != null)
+            {
+                ProcessHeader(request.Content.Headers, (name,value)=>Console.WriteLine("> {0} {1}", name, value));   
+            }
+
+            var response = await base.SendAsync(request, cancellationToken);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("< {0} {1}", (int)response.StatusCode, response.ReasonPhrase);
+            ProcessHeader(response.Headers, (name, value) => Console.WriteLine("< {0} {1}", name, value));
+            if (response.Content != null)
+            {
+                ProcessHeader(response.Content.Headers, (name, value) => Console.WriteLine("< {0} {1}", name, value));
+                Console.WriteLine();
+                Console.WriteLine(await response.Content.ReadAsStringAsync());
+            }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("-------------------------------------------------------------------------------------");
+            Console.ResetColor();
+            return response;
+        }
+
+        private static void ProcessHeader(HttpHeaders headers, Action<string,string> headerAction)
+        {
+            foreach (var httpRequestHeader in headers)
+            {
+                foreach (var headerValue in httpRequestHeader.Value)
+                {
+                    headerAction(httpRequestHeader.Key, headerValue);
+                }
+            }
+        }
     }
 
     public interface IUrlFactory

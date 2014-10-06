@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Windows;
 using System.Windows.Media;
 using SwitchClient;
+using SwitchClient.Classic;
 using SwitchClient.Hyper;
 
 namespace WpfSwitchClient
@@ -12,13 +13,12 @@ namespace WpfSwitchClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SwitchHyperViewModel _model;
+        private ISwitchViewModel _model;
 
 
-        public MainWindow(HttpClient client) : this()
+        public MainWindow(ISwitchViewModel model) : this()
         {
-           // _model = new SwitchViewModel(new SwitchService(client));
-            _model = new SwitchHyperViewModel(client);
+            _model = model;
             _model.PropertyChanged += _model_PropertyChanged;
 
             DataContext = _model;

@@ -25,10 +25,13 @@ namespace HypermediaAppServer.SwitchApp
                 content = new StringContent(SwitchState.ToString());
             }
 
-            return new HttpResponseMessage()
+            var response = new HttpResponseMessage()
             {
                 Content = content
             };
+            response.Headers.CacheControl = new CacheControlHeaderValue(){MaxAge = new TimeSpan(0,0,2)};
+            response.Headers.Add("Tavis-timestamp",DateTime.UtcNow.ToString());
+            return response;
         }
 
         private static HttpContent CreateSwitchContent()
@@ -42,10 +45,10 @@ namespace HypermediaAppServer.SwitchApp
             }
             else
             {
-                if (!TurtleSeason())
-               {
+               // if (!TurtleSeason())
+               //{
                     jObject.TurnOnLink = "switch/on";
-               }
+               //}
             }
             
             
@@ -62,7 +65,7 @@ namespace HypermediaAppServer.SwitchApp
         public HttpResponseMessage PostOn()
         {
             if (SwitchState == true
-                || TurtleSeason()
+           //     || TurtleSeason()
                 ) return new HttpResponseMessage(HttpStatusCode.BadRequest);
             SwitchState = true;
             Console.WriteLine("Switch is On");

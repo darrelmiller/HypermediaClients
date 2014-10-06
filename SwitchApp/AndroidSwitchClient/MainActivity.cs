@@ -7,6 +7,9 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Android.Content.PM;
+using Org.Apache.Http.Client.Params;
+using SwitchClient;
+using SwitchClient.Classic;
 
 namespace AndroidSwitchClient
 {
@@ -22,30 +25,17 @@ namespace AndroidSwitchClient
 		Icon = "@drawable/icon")]
 	public class MainActivity : Activity
 	{
-		GLView1 view;
+	    private ISwitchViewModel _model;
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
 
-			// Create our OpenGL view, and display it
-			view = new GLView1 (this);
-			SetContentView (view);
+            _model = new SwitchViewModel(new SwitchService(new HttpClient() {}));
+            SetContentView(Resource.Layout.Main);
+
 		}
 
-		protected override void OnPause ()
-		{
-			// never forget to do this!
-			base.OnPause ();
-			view.Pause ();
-		}
-
-		protected override void OnResume ()
-		{
-			// never forget to do this!
-			base.OnResume ();
-			view.Resume ();
-		}
 	}
 }
 

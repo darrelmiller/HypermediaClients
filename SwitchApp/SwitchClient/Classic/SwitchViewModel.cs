@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
-namespace SwitchClient
+namespace SwitchClient.Classic
 {
-    public class SwitchViewModel : INotifyPropertyChanged
+    public class SwitchViewModel : ISwitchViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         
@@ -16,46 +17,39 @@ namespace SwitchClient
             _switchState = service.GetSwitchStateAsync().Result;
         }
 
-        
-        private bool SwitchState {
-            get
-            {
-                return _switchState; 
-            }
-             set
-            {
-                _service.SetSwitchStateAsync(value).Wait();
+
+        private async Task SetSwitchStateAsync(bool value ) {
+                await _service.SetSwitchStateAsync(value);
                 _switchState = value; 
                 OnPropertyChanged();
                 OnPropertyChanged("CanTurnOn");
                 OnPropertyChanged("CanTurnOff");
-            }
         }
 
         public bool On
         {
-            get { return SwitchState; }
+            get { return _switchState; }
         }
 
-        public void TurnOff()
+        public Task TurnOff()
         {
-            SwitchState = false;
+            return SetSwitchStateAsync(false);
         }
 
-        public void TurnOn()
+        public Task TurnOn()
         {
-            SwitchState = true;
+            return SetSwitchStateAsync(true);
         }
 
 
         public bool CanTurnOn
         {
-            get { return SwitchState == false; }
+            get { return _switchState == false; }
         }
 
         public bool CanTurnOff
         {
-            get { return SwitchState; }
+            get { return _switchState; }
         }
         
 

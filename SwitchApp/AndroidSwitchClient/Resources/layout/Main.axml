@@ -5,9 +5,29 @@
     android:layout_height="fill_parent"
     android:minWidth="25px"
     android:minHeight="25px">
-    <Button
-        android:text="Hello"
-        android:layout_width="match_parent"
+    <ImageView
+        android:src="@drawable/off"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button1" />
+        android:id="@+id/switchImage"
+        android:layout_gravity="center_horizontal" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:paddingTop="50px"
+        android:layout_gravity="center_horizontal">
+        <Button
+            android:text="On"
+            android:layout_width="100px"
+            android:layout_height="wrap_content"
+            android:id="@+id/OnButton" />
+        <Button
+            android:text="Off"
+            android:layout_width="100px"
+            android:layout_height="wrap_content"
+            android:id="@+id/OffButton" />
+    </LinearLayout>
 </LinearLayout>

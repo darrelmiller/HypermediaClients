@@ -1,5 +1,5 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.MonoForAndroid_API_12" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Android.AVD_for_Nexus_One_by_Google" />
   <MonoDevelop.Ide.Workbench ActiveDocument="AndroidSwitchClient\MainActivity.cs">
     <Files>
       <File FileName="AndroidSwitchClient\MainActivity.cs" Line="1" Column="1" />

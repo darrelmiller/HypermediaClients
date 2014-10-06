@@ -3,20 +3,25 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using SwitchClient.Classic;
 
 namespace SwitchClient.Hyper
 {
-    public class SwitchHyperViewModel : INotifyPropertyChanged
+    public class SwitchHyperViewModel : ISwitchViewModel,INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly HttpClient _client;
         private SwitchDocument _switchStateDocument = new SwitchDocument();
-
+        private SynchronizationContext _CallingContext;
         public SwitchHyperViewModel(HttpClient client)
         {
+            _CallingContext = SynchronizationContext.Current;
             _client = client;
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/switchstate+json"));
             _client.GetAsync(SwitchDocument.SelfLink).ContinueWith(t => UpdateState(t.Result)).Wait();
+
         }
 
         public bool On
@@ -34,14 +39,16 @@ namespace SwitchClient.Hyper
             get { return _switchStateDocument.TurnOffLink != null; }
         }
 
-        public void TurnOff()
+        public async Task TurnOff()
         {
-            _client.PostAsync(_switchStateDocument.TurnOffLink, null).ContinueWith(t => UpdateState(t.Result));
+            var response = await _client.PostAsync(_switchStateDocument.TurnOffLink, null);
+            UpdateState(response);
         }
 
-        public void TurnOn()
+        public async Task TurnOn()
         {
-            _client.PostAsync(_switchStateDocument.TurnOnLink, null).ContinueWith(t => UpdateState(t.Result));
+            var response = await _client.PostAsync(_switchStateDocument.TurnOnLink, null);
+            UpdateState(response);
         }
 
         private void UpdateState(HttpResponseMessage httpResponseMessage)
@@ -59,7 +66,11 @@ namespace SwitchClient.Hyper
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            if (handler != null)
+            {
+                _CallingContext.Post((obj) => handler(this, new PropertyChangedEventArgs(propertyName)),null);
+                
+            }
         }
 
     }

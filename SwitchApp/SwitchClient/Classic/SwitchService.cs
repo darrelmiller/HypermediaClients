@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace SwitchClient
+namespace SwitchClient.Classic
 {
     public class SwitchService
     {

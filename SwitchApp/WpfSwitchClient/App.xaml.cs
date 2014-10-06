@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Windows;
+using SwitchClient.Classic;
+using SwitchClient.Hyper;
 
 namespace WpfSwitchClient
 {
@@ -16,7 +18,8 @@ namespace WpfSwitchClient
                 BaseAddress = new Uri(String.Format("http://{0}:9090/", Environment.MachineName))
             };
 
-            var window = new MainWindow(client);
+            var window = new MainWindow(new SwitchViewModel(new SwitchService(client)));
+            //var window = new MainWindow(new SwitchHyperViewModel(client));
             window.Show();
         }
     }
