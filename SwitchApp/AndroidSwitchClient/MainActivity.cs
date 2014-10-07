@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Net.Http;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
@@ -31,10 +31,24 @@ namespace AndroidSwitchClient
 		{
 			base.OnCreate (bundle);
 
-            _model = new SwitchViewModel(new SwitchService(new HttpClient() {}));
+            _model = new SwitchViewModel(new SwitchService(new HttpClient() {BaseAddress = new Uri("http://pecan:9090/")}));
+            
             SetContentView(Resource.Layout.Main);
 
+            _model.PropertyChanged += _model_PropertyChanged;
+            RefreshControls();
 		}
+
+        void _model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            RefreshControls();
+        }
+
+	    private void RefreshControls()
+	    {
+	        // Get references to UI controls and we update state of controls
+            // TODO
+	    }
 
 	}
 }

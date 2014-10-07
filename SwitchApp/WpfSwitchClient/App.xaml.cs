@@ -6,9 +6,7 @@ using SwitchClient.Hyper;
 
 namespace WpfSwitchClient
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+
     public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)
@@ -18,8 +16,8 @@ namespace WpfSwitchClient
                 BaseAddress = new Uri(String.Format("http://{0}:9090/", Environment.MachineName))
             };
 
-            var window = new MainWindow(new SwitchViewModel(new SwitchService(client)));
-            //var window = new MainWindow(new SwitchHyperViewModel(client));
+            //var window = new MainWindow(new SwitchViewModel(new SwitchService(client)));
+            var window = new MainWindow(new SwitchHyperViewModel(client));
             window.Show();
         }
     }

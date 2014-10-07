@@ -17,28 +17,32 @@ namespace SwitchClient.Classic
             _switchState = service.GetSwitchStateAsync().Result;
         }
 
-
-        private async Task SetSwitchStateAsync(bool value ) {
-                await _service.SetSwitchStateAsync(value);
-                _switchState = value; 
-                OnPropertyChanged();
-                OnPropertyChanged("CanTurnOn");
-                OnPropertyChanged("CanTurnOff");
-        }
-
         public bool On
         {
             get { return _switchState; }
         }
 
-        public Task TurnOff()
+        public async Task TurnOff()
         {
-            return SetSwitchStateAsync(false);
+            
+            await _service.SetSwitchStateAsync(false);
+
+            _switchState = false;
+
+            OnPropertyChanged();
+            OnPropertyChanged("CanTurnOn");
+            OnPropertyChanged("CanTurnOff");
         }
 
-        public Task TurnOn()
+        public async Task TurnOn()
         {
-            return SetSwitchStateAsync(true);
+            await _service.SetSwitchStateAsync(true);
+
+            _switchState = true;
+
+            OnPropertyChanged();
+            OnPropertyChanged("CanTurnOn");
+            OnPropertyChanged("CanTurnOff");
         }
 
 
@@ -51,7 +55,6 @@ namespace SwitchClient.Classic
         {
             get { return _switchState; }
         }
-        
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

@@ -2,8 +2,10 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
+using Tavis.IANA;
 
 namespace HypermediaAppServer.SwitchApp
 {
@@ -15,20 +17,7 @@ namespace HypermediaAppServer.SwitchApp
         public HttpResponseMessage Get()
         {
 
-            HttpContent content;
-            if (Request.Headers.Accept.Contains(new MediaTypeWithQualityHeaderValue("application/switchstate+json")))
-            {
-                content = CreateSwitchContent();
-            }
-            else
-            {
-                content = new StringContent(SwitchState.ToString());
-            }
-
-            var response = new HttpResponseMessage()
-            {
-                Content = content
-            };
+            var response  =CreateSwitchStateResponse();
             response.Headers.CacheControl = new CacheControlHeaderValue(){MaxAge = new TimeSpan(0,0,2)};
             response.Headers.Add("Tavis-timestamp",DateTime.UtcNow.ToString());
             return response;
@@ -52,7 +41,7 @@ namespace HypermediaAppServer.SwitchApp
             }
             
             
-            content = new StringContent(jObject.ToString());
+            content = new StringContent(jObject.ToString(), Encoding.UTF8,"application/switchstate+json");
             return content;
         }
 
@@ -68,11 +57,7 @@ namespace HypermediaAppServer.SwitchApp
            //     || TurtleSeason()
                 ) return new HttpResponseMessage(HttpStatusCode.BadRequest);
             SwitchState = true;
-            Console.WriteLine("Switch is On");
-            return new HttpResponseMessage()
-            {
-                Content = CreateSwitchContent()
-            };
+            return CreateSwitchStateResponse();
         }
 
         [ActionName("off")]
@@ -81,12 +66,26 @@ namespace HypermediaAppServer.SwitchApp
             if (SwitchState == false) return new HttpResponseMessage(HttpStatusCode.BadRequest);
 
             SwitchState = false;
-            Console.WriteLine("Switch is Off");
+
+            return CreateSwitchStateResponse();
+        }
+
+        private HttpResponseMessage CreateSwitchStateResponse()
+        {
+            HttpContent content;
+            if (Request.Headers.Accept.Contains(new MediaTypeWithQualityHeaderValue("application/switchstate+json")))
+            {
+                content = CreateSwitchContent();
+            }
+            else
+            {
+                content = new StringContent(SwitchState.ToString());
+            }
+
             return new HttpResponseMessage()
             {
-                Content = CreateSwitchContent()
+                Content = content
             };
-        }        
-    
+        }
     }
 }

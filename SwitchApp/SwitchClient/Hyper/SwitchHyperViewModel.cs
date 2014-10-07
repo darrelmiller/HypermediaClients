@@ -12,9 +12,12 @@ namespace SwitchClient.Hyper
     public class SwitchHyperViewModel : ISwitchViewModel,INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly SynchronizationContext _CallingContext;
+
         private readonly HttpClient _client;
         private SwitchDocument _switchStateDocument = new SwitchDocument();
-        private SynchronizationContext _CallingContext;
+        
+
         public SwitchHyperViewModel(HttpClient client)
         {
             _CallingContext = SynchronizationContext.Current;
@@ -29,6 +32,18 @@ namespace SwitchClient.Hyper
             get { return _switchStateDocument.On; }
         }
 
+        public async Task TurnOff()
+        {
+            var response = await _client.PostAsync(_switchStateDocument.TurnOffLink, null);
+            await UpdateState(response);
+        }
+
+        public async Task TurnOn()
+        {
+            var response = await _client.PostAsync(_switchStateDocument.TurnOnLink, null);
+            await UpdateState(response);
+        }
+
         public bool CanTurnOn
         {
             get { return _switchStateDocument.TurnOnLink != null; }
@@ -38,24 +53,13 @@ namespace SwitchClient.Hyper
         {
             get { return _switchStateDocument.TurnOffLink != null; }
         }
+     
 
-        public async Task TurnOff()
-        {
-            var response = await _client.PostAsync(_switchStateDocument.TurnOffLink, null);
-            UpdateState(response);
-        }
-
-        public async Task TurnOn()
-        {
-            var response = await _client.PostAsync(_switchStateDocument.TurnOnLink, null);
-            UpdateState(response);
-        }
-
-        private void UpdateState(HttpResponseMessage httpResponseMessage)
+        private async Task UpdateState(HttpResponseMessage httpResponseMessage)
         {
             if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
             {
-                _switchStateDocument = SwitchDocument.Load(httpResponseMessage.Content.ReadAsStreamAsync().Result);
+                _switchStateDocument = SwitchDocument.Load(await httpResponseMessage.Content.ReadAsStreamAsync());
 
                 OnPropertyChanged();
                 OnPropertyChanged("CanTurnOn");

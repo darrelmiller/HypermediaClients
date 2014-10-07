@@ -7,8 +7,11 @@ namespace SwitchClient.Hyper
 {
     public class SwitchDocument
     {
+        public bool On { get; private set; }
+        public Uri TurnOnLink { get; set; }
+        public Uri TurnOffLink { get; set; }
 
-
+  
         public static SwitchDocument Load(Stream stream)
         {
             var switchStateDocument = new SwitchDocument();
@@ -31,14 +34,9 @@ namespace SwitchClient.Hyper
             return switchStateDocument;
         }
 
-        public bool On { get; private set; }
-        public Uri TurnOnLink { get; set; }
-        public Uri TurnOffLink { get; set; }
-
         public static Uri SelfLink
         {
             get { return new Uri("switch", UriKind.Relative); }
         }
-
     }
 }
