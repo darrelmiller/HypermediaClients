@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExpenseApprovalApp", "ExpenseApprovalApp", "{ED8E6556-11B8-4064-9D49-FFED44449C28}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ExpenseApprovalApp.Shared", "ExpenseApprovalApp\ExpenseApprovalApp.Shared\ExpenseApprovalApp.Shared.shproj", "{7D7629DC-6091-40AE-BE1C-7C90EFE015C2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpenseApprovalApp.Windows", "ExpenseApprovalApp\ExpenseApprovalApp.Windows\ExpenseApprovalApp.Windows.csproj", "{82B08774-AFEB-4709-BF60-69B8B3FFCCA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpenseApprovalApp.WindowsPhone", "ExpenseApprovalApp\ExpenseApprovalApp.WindowsPhone\ExpenseApprovalApp.WindowsPhone.csproj", "{DFCE1DAD-98B8-43DD-B6CD-3F947BAD0F24}"
@@ -16,12 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Notes.txt = Notes.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpenseApprovalAppLogic", "ExpenseApprovalApp\ExpenseApprovalAppLogic\ExpenseApprovalAppLogic.csproj", "{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		ExpenseApprovalApp\ExpenseApprovalApp.Shared\ExpenseApprovalApp.Shared.projitems*{82b08774-afeb-4709-bf60-69b8b3ffcca0}*SharedItemsImports = 4
-		ExpenseApprovalApp\ExpenseApprovalApp.Shared\ExpenseApprovalApp.Shared.projitems*{7d7629dc-6091-40ae-be1c-7c90efe015c2}*SharedItemsImports = 13
-		ExpenseApprovalApp\ExpenseApprovalApp.Shared\ExpenseApprovalApp.Shared.projitems*{dfce1dad-98b8-43dd-b6cd-3f947bad0f24}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
@@ -75,13 +70,23 @@ Global
 		{DFCE1DAD-98B8-43DD-B6CD-3F947BAD0F24}.Release|x86.ActiveCfg = Release|x86
 		{DFCE1DAD-98B8-43DD-B6CD-3F947BAD0F24}.Release|x86.Build.0 = Release|x86
 		{DFCE1DAD-98B8-43DD-B6CD-3F947BAD0F24}.Release|x86.Deploy.0 = Release|x86
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Release|ARM.ActiveCfg = Release|Any CPU
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Release|x64.ActiveCfg = Release|Any CPU
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7D7629DC-6091-40AE-BE1C-7C90EFE015C2} = {ED8E6556-11B8-4064-9D49-FFED44449C28}
 		{82B08774-AFEB-4709-BF60-69B8B3FFCCA0} = {ED8E6556-11B8-4064-9D49-FFED44449C28}
 		{DFCE1DAD-98B8-43DD-B6CD-3F947BAD0F24} = {ED8E6556-11B8-4064-9D49-FFED44449C28}
+		{796AE00B-3D6D-4700-88F1-F2BB9F13A9E6} = {ED8E6556-11B8-4064-9D49-FFED44449C28}
 	EndGlobalSection
 EndGlobal

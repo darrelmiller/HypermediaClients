@@ -1,26 +1,31 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using ExpenseApprovalApp.Tools;
+using ExpenseApprovalAppLogic;
+using ExpenseApprovalAppLogic.Links;
+using ExpenseApprovalAppLogic.Tools;
 using Tavis;
 
 namespace ExpenseApprovalApp.Links
 {
     [LinkRelationType("urn:tavis:action")]
-    public class ActionLink : Link
+    public class ActionLink : BaseLink
     {
 
         public ActionLink()
         {
-            AddRequestBuilder((request) =>
+            this.AddRequestBuilder((request) =>
             {
-                Method = HttpMethod.Post;
+                request.Method = HttpMethod.Post;
+
                 request.AttachLink(this);
                 return request;
             });
+            KeepInHistory = false;
         }
        
 
-        public async Task ProcessActionLinkResponse(HttpResponseMessage response, ClientState clientState)
+
+        public async Task ProcessActionLinkResponse(HttpResponseMessage response, ExpenseAppClientState clientState)
         {
             if (!response.HasContent()) return;
 

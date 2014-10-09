@@ -12,11 +12,13 @@ namespace ExpenseApprovalApp.Links
     [LinkRelationType("urn:tavis:show")]
     public class ShowLink : Link
     {
-        public override HttpRequestMessage CreateRequest()
+        public ShowLink()
         {
-            var request = base.CreateRequest();
-            request.AttachLink(this);
-            return request;
+            AddRequestBuilder((request) =>
+            {
+                request.AttachLink(this);
+                return request;
+            });
         }
 
         public async Task ProcessShowLinkResponse(HttpResponseMessage response, ClientState clientState)

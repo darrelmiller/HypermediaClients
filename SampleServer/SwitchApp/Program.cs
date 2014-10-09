@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Controllers;
@@ -25,9 +26,14 @@ namespace HypermediaAppServer
 
             server.OpenAsync().Wait();
 
+            string exit = "";
+            while (String.IsNullOrWhiteSpace(exit))
+            {
+                Console.WriteLine("Server listening on " + serverUrl.AbsoluteUri);
+                exit = Console.ReadLine();
+                Console.Clear();
+            }
 
-            Console.WriteLine("Server listening on " + serverUrl.AbsoluteUri);
-            Console.ReadLine();
 
 
 
@@ -69,23 +75,28 @@ namespace HypermediaAppServer
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("> {0} {1}",request.Method,request.RequestUri.AbsolutePath);
-            ProcessHeader(request.Headers, (name, value) => Console.WriteLine("> {0} {1}", name, value));   
+            Console.WriteLine("> {0} {1}",request.Method,request.RequestUri.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped));
+            ProcessHeader(request.Headers, (name, value) => Console.WriteLine("> {0}: {1}", name, value));   
 
             if (request.Content != null)
             {
-                ProcessHeader(request.Content.Headers, (name,value)=>Console.WriteLine("> {0} {1}", name, value));   
+                ProcessHeader(request.Content.Headers, (name,value)=>Console.WriteLine("> {0}: {1}", name, value));   
             }
 
             var response = await base.SendAsync(request, cancellationToken);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("< {0} {1}", (int)response.StatusCode, response.ReasonPhrase);
-            ProcessHeader(response.Headers, (name, value) => Console.WriteLine("< {0} {1}", name, value));
+            ProcessHeader(response.Headers, (name, value) => Console.WriteLine("< {0}: {1}", name, value));
             if (response.Content != null)
             {
-                ProcessHeader(response.Content.Headers, (name, value) => Console.WriteLine("< {0} {1}", name, value));
+                ProcessHeader(response.Content.Headers, (name, value) => Console.WriteLine("< {0}: {1}", name, value));
                 Console.WriteLine();
-                Console.WriteLine(await response.Content.ReadAsStringAsync());
+                var body = await response.Content.ReadAsStringAsync();
+                if (body.Length > 3000)
+                {
+                    body = body.Substring(0, 3000) + "...";
+                }
+                Console.WriteLine(body);
             }
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("-------------------------------------------------------------------------------------");

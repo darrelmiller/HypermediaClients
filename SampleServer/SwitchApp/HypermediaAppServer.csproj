@@ -105,8 +105,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExpenseApp\ReceiptController.cs" />
     <Compile Include="SwitchApp\SwitchController.cs" />
-    <Compile Include="TempCJContent.cs" />
-    <Compile Include="UnitySupport.cs" />
+    <Compile Include="Tools\TempCJContent.cs" />
+    <Compile Include="Tools\UnitySupport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

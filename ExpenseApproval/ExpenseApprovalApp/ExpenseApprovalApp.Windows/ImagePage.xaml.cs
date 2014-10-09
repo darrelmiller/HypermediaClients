@@ -1,10 +1,11 @@
 ﻿
+using System;
+using System.IO;
 using Windows.UI.Xaml.Controls;
-
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using ExpenseApprovalAppLogic.ViewModels;
 
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
-using ExpenseApprovalApp.ViewModels;
 
 namespace ExpenseApprovalApp
 {
@@ -14,25 +15,29 @@ namespace ExpenseApprovalApp
     public sealed partial class ImagePage : Page
     {
 
-        private ImagePageViewModel _ViewModel = new ImagePageViewModel();
+        private ImagePageViewModel _ViewModel;
 
 
         public ImagePage()
         {
-            this.InitializeComponent();
-            DataContext = ViewModel;
+            InitializeComponent();
+           
+            
         }
 
         public ImagePageViewModel ViewModel
         {
             get { return _ViewModel; }
-            set { _ViewModel = value; }
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            var clientState = e.Parameter as ClientState;
-            ViewModel.LoadImage(clientState);
+            _ViewModel= e.Parameter as ImagePageViewModel;
+            DataContext = _ViewModel;
+            var bitmap = new BitmapImage();
+            await bitmap.SetSourceAsync(_ViewModel.Image.AsRandomAccessStream());
+            Image.Source = bitmap;
         }
 
     }

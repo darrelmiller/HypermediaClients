@@ -58,6 +58,7 @@ namespace HypermediaAppServer.ExpenseApp
 
                 if (expense.Status != "approved")
                 {
+
                     item.Links.Add(new Link()
                     {
                         Href = urlFactory.CreateUrl(String.Format("expense/{0}/approve", expense.Id)),

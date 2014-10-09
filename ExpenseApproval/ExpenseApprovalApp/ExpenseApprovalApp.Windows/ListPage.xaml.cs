@@ -9,13 +9,10 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using ExpenseApprovalApp.Links;
-using ExpenseApprovalApp.ViewModels;
+using ExpenseApprovalAppLogic;
+using ExpenseApprovalAppLogic.Links;
+using ExpenseApprovalAppLogic.ViewModels;
 
 namespace ExpenseApprovalApp
 {
@@ -26,7 +23,7 @@ namespace ExpenseApprovalApp
     public sealed partial class ListPage : Page
     {
         private ListPageViewModel _viewModel;
-        private ClientState _clientState;
+        private ExpenseAppClientState _clientState;
 
 
         public ListPageViewModel ViewModel
@@ -42,7 +39,7 @@ namespace ExpenseApprovalApp
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _clientState = e.Parameter as ClientState;
+            _clientState = e.Parameter as ExpenseAppClientState;
             _clientState.PropertyChanged += _clientState_PropertyChanged;
             _viewModel = new ListPageViewModel(_clientState);
             DataContext = _viewModel;
@@ -56,9 +53,6 @@ namespace ExpenseApprovalApp
             }
         }
  
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            _clientState.FollowLinkAsync(new HomeLink());
-        }
+       
     }
 }

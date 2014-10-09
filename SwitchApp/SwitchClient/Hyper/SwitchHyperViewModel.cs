@@ -5,7 +5,6 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using SwitchClient.Classic;
 
 namespace SwitchClient.Hyper
 {
@@ -25,6 +24,18 @@ namespace SwitchClient.Hyper
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/switchstate+json"));
             _client.GetAsync(SwitchDocument.SelfLink).ContinueWith(t => UpdateState(t.Result)).Wait();
 
+        }
+
+        private async Task UpdateState(HttpResponseMessage httpResponseMessage)
+        {
+            if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
+            {
+                _switchStateDocument = SwitchDocument.Load(await httpResponseMessage.Content.ReadAsStreamAsync());
+
+                OnPropertyChanged();
+                OnPropertyChanged("CanTurnOn");
+                OnPropertyChanged("CanTurnOff");
+            }
         }
 
         public bool On
@@ -55,17 +66,7 @@ namespace SwitchClient.Hyper
         }
      
 
-        private async Task UpdateState(HttpResponseMessage httpResponseMessage)
-        {
-            if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
-            {
-                _switchStateDocument = SwitchDocument.Load(await httpResponseMessage.Content.ReadAsStreamAsync());
-
-                OnPropertyChanged();
-                OnPropertyChanged("CanTurnOn");
-                OnPropertyChanged("CanTurnOff");
-            }
-        }
+        
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

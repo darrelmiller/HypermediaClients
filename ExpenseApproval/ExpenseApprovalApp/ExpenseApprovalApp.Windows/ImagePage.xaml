@@ -43,6 +43,6 @@
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
             
         </Grid>
-        <Image Grid.Row="1" Source="{Binding Image}"></Image>
+        <Image x:Name="Image" Grid.Row="1" ></Image>
     </Grid>
 </Page>
