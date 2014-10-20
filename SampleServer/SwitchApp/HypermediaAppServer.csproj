@@ -75,9 +75,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Tavis.ApiRouter">
-      <HintPath>..\packages\Tavis.ApiRouter.0.1.8\lib\net40\Tavis.ApiRouter.dll</HintPath>
-    </Reference>
     <Reference Include="Tavis.Home">
       <HintPath>..\packages\Tavis.Home.0.5.9\lib\portable-win+net40+sl40+wp71\Tavis.Home.dll</HintPath>
     </Reference>
@@ -85,8 +82,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Tavis.Link.0.5.2\lib\portable-win+net40+sl40+wp71\Tavis.Link.dll</HintPath>
     </Reference>
-    <Reference Include="Tavis.TreeRoute">
-      <HintPath>..\packages\Tavis.ApiRouter.0.1.8\lib\net40\Tavis.TreeRoute.dll</HintPath>
+    <Reference Include="Tavis.TreeRoute, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Tavis.TreeRoute.1.0.15\lib\net45\Tavis.TreeRoute.dll</HintPath>
     </Reference>
     <Reference Include="Tavis.UriTemplates">
       <HintPath>..\packages\Tavis.UriTemplates.0.4\lib\Net35\Tavis.UriTemplates.dll</HintPath>
