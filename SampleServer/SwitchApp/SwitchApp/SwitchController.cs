@@ -83,11 +83,11 @@ namespace HypermediaAppServer.SwitchApp
 
         private static bool CanTurnOn()
         {
-            return false;
+            return true;
         }
         private static bool CanTurnOff()
         {
-            return false;
+            return true;
         }
  
     }
