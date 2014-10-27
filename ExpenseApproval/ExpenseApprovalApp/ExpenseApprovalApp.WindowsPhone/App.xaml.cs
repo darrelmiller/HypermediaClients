@@ -11,8 +11,11 @@ using Windows.UI.Xaml.Controls;
 
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
+using Windows.UI.Xaml.Media.Animation;
+using Windows.UI.Xaml.Navigation;
 using ExpenseApprovalApp.Links;
 using ExpenseApprovalAppLogic;
+using ExpenseApprovalAppLogic.Links;
 
 namespace ExpenseApprovalApp
 {

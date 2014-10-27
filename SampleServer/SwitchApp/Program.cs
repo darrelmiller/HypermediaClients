@@ -18,7 +18,7 @@ namespace HypermediaAppServer
     {
         static void Main(string[] args)
         {
-            var serverUrl = new Uri("http://pecan:9090");
+            var serverUrl = new Uri("http://pecan:9001");
             var config = new HttpSelfHostConfiguration(serverUrl);
             ConfigureApi(config, serverUrl);
 
