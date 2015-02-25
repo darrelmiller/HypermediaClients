@@ -1,11 +1,9 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using ExpenseApprovalAppLogic;
-using ExpenseApprovalAppLogic.Links;
 using ExpenseApprovalAppLogic.Tools;
 using Tavis;
 
-namespace ExpenseApprovalApp.Links
+namespace ExpenseApprovalAppLogic.Links
 {
     [LinkRelationType("urn:tavis:action")]
     public class ActionLink : BaseLink

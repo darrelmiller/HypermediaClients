@@ -2,7 +2,6 @@
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using ExpenseApprovalApp;
 using ExpenseApprovalAppLogic.Tools;
 
 namespace ExpenseApprovalAppLogic.ViewModels

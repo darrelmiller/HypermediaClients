@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CollectionJson;
-using ExpenseApprovalApp.Links;
 using ExpenseApprovalAppLogic.Links;
 using ExpenseApprovalAppLogic.Tools;
 using Tavis;
@@ -17,7 +16,7 @@ using Link = Tavis.Link;
 namespace ExpenseApprovalAppLogic
 {
 
-    public class ExpenseAppClientState : INotifyPropertyChanged
+    public class ExpenseAppClientState : INotifyPropertyChanged, IResponseHandler
     {
 
         public LinkFactory LinkFactory
@@ -80,46 +79,43 @@ namespace ExpenseApprovalAppLogic
             LinkFactory.AddLinkType<ActionLink>();          
         }
 
-        public async Task FollowLinkAsync(Link link)
+        public Task<HttpResponseMessage> FollowLinkAsync(Link link)
         {
-            var request = link.BuildRequestMessage();
-           await ApplyResponseAsync(_httpClient.SendAsync(request));
-
+           return _httpClient.FollowLinkAsync(link,this);
         }
 
-        public async Task ApplyResponseAsync(Task<HttpResponseMessage> responseTask)
+        public async Task<HttpResponseMessage> HandleResponseAsync(string linkRelation, HttpResponseMessage response)
         {
 
             try
             {
-                var response = await responseTask;
-
+        
                 var contextLink = response.RequestMessage.ExtractLink();
 
                 if (response.StatusCode.IsServerError())
                 {
                     HttpClientHelper.ProcessServerErrors(response, this);
-                    return;
+                    return response;
                 }
                 if (response.StatusCode.IsClientError())
                 {
                     HttpClientHelper.ProcessClientError(response, this, contextLink);
-                    return;
+                    return response;
                 }
                 if (response.StatusCode.IsRedirect())
                 {
                     await HttpClientHelper.ProcessRedirect(response, this, contextLink);
-                    return;
+                    return response;
                 }
 
                 if (response.Headers.Contains("Link"))
                 {
                     var links = response.Headers.ParseLinkHeaders(
                         new Uri(response.RequestMessage.RequestUri.Authority), LinkFactory);
-                    CurrentBackLink = links.FirstOrDefault(l => l.Title == "back");
+                    CurrentBackLink = links.Cast<Link>().FirstOrDefault(l => l.Title == "back");
                 }
 
-                switch (contextLink.Relation)
+                switch (linkRelation)
                 {
                     case TavisLinkTypes.Show:
                         var showLink = (ShowLink) contextLink;
@@ -140,6 +136,7 @@ namespace ExpenseApprovalAppLogic
             {
                 UserMessage = " Sorry, the client is having issues :" + ex.Message;
             }
+            return response;
         }
 
         public async Task BackAsync()
@@ -164,5 +161,6 @@ namespace ExpenseApprovalAppLogic
         private string _userMessage;
         private HomeDocument _homeDocument;
         private Collection _currentCollection;
+       
     }
 }
