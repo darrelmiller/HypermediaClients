@@ -5,9 +5,9 @@ namespace SwitchClient.Classic
 {
     public class SwitchService
     {
-        private const string SwitchStateResource = "switch";
-        private const string SwitchOnResource = "switch/on";
-        private const string SwitchOffResource = "switch/off";
+        private const string SwitchStateResource = "/switch";
+        private const string SwitchOnResource = "/switch/on";
+        private const string SwitchOffResource = "/switch/off";
 
         private readonly HttpClient _client;
 
