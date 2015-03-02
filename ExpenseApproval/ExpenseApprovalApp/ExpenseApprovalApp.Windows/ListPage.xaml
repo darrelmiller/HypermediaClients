@@ -41,13 +41,15 @@
             IsSwipeEnabled="false">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <Grid HorizontalAlignment="Left" Width="250" Height="250">
+                    <Grid HorizontalAlignment="Left" Width="350" Height="250">
 
-                        <StackPanel VerticalAlignment="Top" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
-                            <TextBlock Text="{Binding Description}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" Height="60" Margin="15,0,15,0" FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding Amount}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontSize="12"/>
-                            <TextBlock Text="{Binding Category}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" FontSize="12"/>
-                            <StackPanel x:Name="Buttons" Orientation="Vertical">
+                        <StackPanel VerticalAlignment="Top" Background="{ThemeResource  ListViewItemOverlayBackgroundThemeBrush}">
+                            <TextBlock Text="{Binding Description}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0" FontWeight="SemiBold"  />
+                            <StackPanel Orientation="Horizontal" >
+                                <TextBlock Text="{Binding Category}" Foreground="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" />
+                                <TextBlock Text="{Binding Amount}" Foreground="{ThemeResource ListBoxItemSelectedForegroundThemeBrush}" Style="{StaticResource BaseTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" />
+                            </StackPanel>
+                            <StackPanel x:Name="Buttons" Orientation="Horizontal" VerticalAlignment="Bottom" >
                                 <Button Command="{Binding DataContext.ApproveCommand, ElementName=itemGridView}" CommandParameter="{Binding}">Approve</Button>
                                 <Button Command="{Binding DataContext.RejectCommand, ElementName=itemGridView}" CommandParameter="{Binding}">Unapprove</Button>
                                 <Button Command="{Binding DataContext.ReceiptCommand, ElementName=itemGridView}" CommandParameter="{Binding}">Receipt</Button>
