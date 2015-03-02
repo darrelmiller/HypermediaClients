@@ -81,9 +81,10 @@ namespace HypermediaAppServer.SwitchApp
             return CreateSwitchStateResponse();
         }
 
+        // Permissions, Timed limits, External State
         private static bool CanTurnOn()
         {
-            return true;
+            return true;  
         }
         private static bool CanTurnOff()
         {
