@@ -5,7 +5,7 @@
             "status" :  "approved",
             "description": "A hearty breakfast.",
             "amount": 23.12,
-            "category": "meals",
+            "category": "Meals",
             "receiptFileName" : "Receipt1.jpg"
         },
         {
@@ -13,7 +13,7 @@
             "status" :  "unapproved",
             "description": "Rental car to airport.",
             "amount": 47.44,
-            "category": "transport",
+            "category": "Transport",
             "receiptFileName" : "DynDns.pdf"
         },
         {
@@ -21,7 +21,7 @@
             "status" :  "waiting",
             "description": "Taxi to conference.",
             "amount": 35.12,
-            "category": "transport"
+            "category": "Transport"
         },
         {
             "id": 4,
