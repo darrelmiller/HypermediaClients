@@ -14,7 +14,13 @@ namespace SwitchClient.Classic
         public SwitchViewModel(SwitchService service)
         {
             _service = service;
-            _switchState = service.GetSwitchStateAsync().Result;
+
+            Initialize();
+        }
+
+        private async Task Initialize()
+        {
+            _switchState = await _service.GetSwitchStateAsync();            
         }
 
         public bool On
