@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+    <body>
+        <p id="switch">Off</p>
+
+        <input id="btnTurnOn" type="button" value="On" onclick="TurnOn()" />
+        <input id="btnTurnOff" type="button" value="Off" onclick="TurnOff()"/>
+
+        
+        <script type="text/javascript">
+            function TurnOn() {
+                document.getElementById('switch').innerHTML = "On";
+            }
+
+            function TurnOff() {
+                document.getElementById('switch').innerHTML = "Off";
+            }
+
+            $(function domReady() {
+                $('#btnTurnOff').click(function turnOff() {
+                    $('#switch').html("Off");
+                });
+            });
+        </script>
+    </body>
+
+</html>

@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Controls;
 using ExpenseApprovalAppLogic;
 using ExpenseApprovalAppLogic.Links;
 using ExpenseApprovalAppLogic.ViewModels;
+using Tavis;
 
 namespace ExpenseApprovalApp
 {
@@ -53,7 +54,7 @@ namespace ExpenseApprovalApp
 
             if (rootFrame.Content == null)
             {
-                _ClientState.FollowLinkAsync(new HomeLink());  // Application starts
+                _httpClient.FollowLinkAsync(new HomeLink(), _ClientState);  // Application starts
                 
             }
             

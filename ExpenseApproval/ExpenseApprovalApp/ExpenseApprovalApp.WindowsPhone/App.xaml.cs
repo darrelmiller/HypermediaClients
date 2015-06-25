@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using ExpenseApprovalAppLogic;
 using ExpenseApprovalAppLogic.Links;
+using Tavis;
 
 namespace ExpenseApprovalApp
 {
@@ -98,7 +99,7 @@ namespace ExpenseApprovalApp
  
                 _ClientState.PropertyChanged += _ClientState_PropertyChanged;
    
-                _ClientState.FollowLinkAsync(new HomeLink());  // Application starts
+                _httpClient.FollowLinkAsync(new HomeLink(),_ClientState);  // Application starts
                 
             }
             

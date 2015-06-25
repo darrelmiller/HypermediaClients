@@ -30,40 +30,11 @@ namespace ExpenseApprovalAppLogic.Links
     {
         public HomeLink()
         {
-            this.AddRequestBuilder((request) =>
-            {
-                request.RequestUri = new Uri("http://pecan:9090/expenseapp/");
-                request.AttachLink(this);
-                return request;
-            });
+            Target = new Uri("http://pecan:9090/expenseapp/");
             KeepInHistory = false;
         }
        
 
-        public async Task ProcessHomeLinkResponse(HttpResponseMessage response, ExpenseAppClientState clientState)
-        {
-            if (!response.HasContent()) return;
-
-            var contentStream = await response.Content.ReadAsStreamAsync();
-
-            ShowLink showLink = null;  // Need to find a showlink to follow
-
-            switch (response.Content.Headers.ContentType.MediaType)
-            {
-                // Currently only support application/home+json
-                case "application/home+json":
-                    clientState.HomeDocument = HomeDocument.Parse(contentStream, clientState.LinkFactory);
-                    showLink = clientState.HomeDocument.GetResource(LinkHelper.GetLinkRelationTypeName<ShowLink>()) as ShowLink;
-                    break;
-                
-                // Add more media types here as desired.  WADL, SWAGGER, API Blueprint, WSDL, etc
-            }
-
-            if (showLink != null)
-            {
-                await clientState.FollowLinkAsync(showLink);
-            }
-        }
     }
 
 

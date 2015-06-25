@@ -79,32 +79,25 @@ namespace ExpenseApprovalAppLogic
             LinkFactory.AddLinkType<ActionLink>();          
         }
 
-        public Task<HttpResponseMessage> FollowLinkAsync(Link link)
-        {
-           return _httpClient.FollowLinkAsync(link,this);
-        }
-
         public async Task<HttpResponseMessage> HandleResponseAsync(string linkRelation, HttpResponseMessage response)
         {
 
             try
             {
         
-                var contextLink = response.RequestMessage.ExtractLink();
-
                 if (response.StatusCode.IsServerError())
                 {
-                    HttpClientHelper.ProcessServerErrors(response, this);
+                    ProcessServerErrors(response, this,linkRelation);
                     return response;
                 }
                 if (response.StatusCode.IsClientError())
                 {
-                    HttpClientHelper.ProcessClientError(response, this, contextLink);
+                    ProcessClientError(response, this, linkRelation);
                     return response;
                 }
                 if (response.StatusCode.IsRedirect())
                 {
-                    await HttpClientHelper.ProcessRedirect(response, this, contextLink);
+                    await ProcessRedirect(response, this, linkRelation);
                     return response;
                 }
 
@@ -118,16 +111,13 @@ namespace ExpenseApprovalAppLogic
                 switch (linkRelation)
                 {
                     case TavisLinkTypes.Show:
-                        var showLink = (ShowLink) contextLink;
-                        await showLink.ProcessShowLinkResponse(response, this);
+                        await ProcessShowLinkResponse(response);
                         break;
                     case TavisLinkTypes.Action:
-                        var actionLink = (ActionLink) contextLink;
-                        await actionLink.ProcessActionLinkResponse(response, this);
+                        await ProcessActionLinkResponse(response);
                         break;
                     case TavisLinkTypes.Home:
-                        var homeLink = (HomeLink) contextLink;
-                        await homeLink.ProcessHomeLinkResponse(response, this);
+                        await ProcessHomeLinkResponse(response);
                         break;
                 }
 
@@ -142,7 +132,117 @@ namespace ExpenseApprovalAppLogic
         public async Task BackAsync()
         {
             if (CurrentBackLink == null) return;
-            FollowLinkAsync(CurrentBackLink);
+            _httpClient.FollowLinkAsync(CurrentBackLink,this);
+        }
+
+        private async Task ProcessShowLinkResponse(HttpResponseMessage response)
+        {
+            if (!response.HasContent() && response.Content.Headers.ContentType != null) return;  // If we don't know the content-type, we can't show it
+
+
+            var contentStream = await response.Content.ReadAsStreamAsync();
+
+            switch (response.Content.Headers.ContentType.MediaType)
+            {
+                case "application/vnd.collection+json":
+                    CurrentCollection = CollectionJsonHelper.ParseCollectionJson(contentStream);
+                    break;
+                case "image/jpeg":
+                    CurrentImage = contentStream;
+                    break;
+
+                case "image/tiff":
+
+                    break;
+                case "application/pdf":
+                    CurrentFile = contentStream;
+
+                    break;
+            }
+
+
+
+        }
+
+        private async Task ProcessHomeLinkResponse(HttpResponseMessage response)
+        {
+            if (!response.HasContent()) return;
+
+            var contentStream = await response.Content.ReadAsStreamAsync();
+
+            ShowLink showLink = null;  // Need to find a showlink to follow
+
+            switch (response.Content.Headers.ContentType.MediaType)
+            {
+                // Currently only support application/home+json
+                case "application/home+json":
+                    HomeDocument = HomeDocument.Parse(contentStream, LinkFactory);
+                    showLink = HomeDocument.GetResource(LinkHelper.GetLinkRelationTypeName<ShowLink>()) as ShowLink;
+                    break;
+
+                // Add more media types here as desired.  WADL, SWAGGER, API Blueprint, WSDL, etc
+            }
+
+            if (showLink != null)
+            {
+                await _httpClient.FollowLinkAsync(showLink,this);
+            }
+        }
+
+        private async Task ProcessActionLinkResponse(HttpResponseMessage response)
+        {
+            if (!response.HasContent()) return;
+
+            var contentStream = await response.Content.ReadAsStreamAsync();
+
+            switch (response.Content.Headers.ContentType.MediaType)
+            {
+                case "application/vnd.collection+json":
+                    CurrentCollection = CollectionJsonHelper.ParseCollectionJson(contentStream);
+                    break;
+            }
+        }
+
+
+        private static async Task ProcessRedirect(HttpResponseMessage response, ExpenseAppClientState clientState, string contextRelation)
+        {
+            if ((int)response.StatusCode >= 300)
+            {
+                // Process redirect
+                // TODO 
+            }
+        }
+
+        private static bool ProcessClientError(HttpResponseMessage response, ExpenseAppClientState clientState, string contextRelation)
+        {
+            if ((int)response.StatusCode >= 400)
+            {
+                // Server claims we made a bad request
+                // Don't change client state other than to record an error has occured
+                // Create error instance, add it to the list of errors
+                clientState.UserMessage = String.Format("{0} error returned while following {1} to {2}", response.ReasonPhrase,
+                    contextRelation, response.RequestMessage.RequestUri.OriginalString);
+                return true;
+            }
+            return false;
+        }
+
+        private static void ProcessServerErrors(HttpResponseMessage response, ExpenseAppClientState clientState, string contextRelation)
+        {
+            if ((int)response.StatusCode >= 500)
+            {
+                // Server failed to process request correctly.
+                // Don't change client state other than to record an error has occured
+                // Create error instance, add it to the list of errors
+                // If we keep getting these, make sure the user can exit the app or select another server
+                clientState.UserMessage = "Server failed to process request successfully - " + response.ReasonPhrase;
+            }
+        }
+
+        
+        public Task<HttpResponseMessage> FollowLinkAsync(Link link)
+        {
+            return _httpClient.FollowLinkAsync(link, this);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -161,6 +261,5 @@ namespace ExpenseApprovalAppLogic
         private string _userMessage;
         private HomeDocument _homeDocument;
         private Collection _currentCollection;
-       
     }
 }

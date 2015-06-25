@@ -131,6 +131,7 @@ publish/
 *.pubxml
 
 # NuGet Packages
+packages
 */packages/*
 *.nupkg
 ## TODO: If the tool you use requires repositories.config

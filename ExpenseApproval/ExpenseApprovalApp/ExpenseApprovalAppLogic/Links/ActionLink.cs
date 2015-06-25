@@ -8,33 +8,11 @@ namespace ExpenseApprovalAppLogic.Links
     [LinkRelationType("urn:tavis:action")]
     public class ActionLink : BaseLink
     {
-
         public ActionLink()
         {
-            this.AddRequestBuilder((request) =>
-            {
-                request.Method = HttpMethod.Post;
-
-                request.AttachLink(this);
-                return request;
-            });
+            this.Method = HttpMethod.Post;
             KeepInHistory = false;
         }
-       
 
-
-        public async Task ProcessActionLinkResponse(HttpResponseMessage response, ExpenseAppClientState clientState)
-        {
-            if (!response.HasContent()) return;
-
-            var contentStream = await response.Content.ReadAsStreamAsync();
-
-            switch (response.Content.Headers.ContentType.MediaType)
-            {
-                case "application/vnd.collection+json":
-                    clientState.CurrentCollection = CollectionJsonHelper.ParseCollectionJson(contentStream);
-                    break;
-            }
-        }
     }
 }

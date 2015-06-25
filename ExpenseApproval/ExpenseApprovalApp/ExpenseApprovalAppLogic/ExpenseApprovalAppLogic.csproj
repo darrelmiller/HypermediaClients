@@ -43,7 +43,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\CollectionJsonHelper.cs" />
     <Compile Include="Tools\DelegateCommand.cs" />
-    <Compile Include="Tools\HttpClientHelper.cs" />
+    <Compile Include="Tools\HttpStatusCodeExtensions.cs" />
     <Compile Include="Tools\RequestMessageExtensions.cs" />
     <Compile Include="Tools\ResponseMessageExtensions.cs" />
     <Compile Include="ViewModels\ImagePageViewModel.cs" />

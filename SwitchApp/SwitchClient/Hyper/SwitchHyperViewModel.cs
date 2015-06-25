@@ -22,10 +22,15 @@ namespace SwitchClient.Hyper
             _CallingContext = SynchronizationContext.Current;
             _client = client;
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/switchstate+json"));
-            _client.GetAsync(SwitchDocument.SelfLink).ContinueWith(t => UpdateState(t.Result)).Wait();
-
+            Initialize();
         }
 
+        private async Task Initialize()
+        {
+            var resp = await _client.GetAsync(SwitchDocument.SelfLink);
+            UpdateState(resp);
+
+        }  
         private async Task UpdateState(HttpResponseMessage httpResponseMessage)
         {
             if (httpResponseMessage.StatusCode == HttpStatusCode.OK)

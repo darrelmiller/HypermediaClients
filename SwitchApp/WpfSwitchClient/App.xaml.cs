@@ -16,8 +16,8 @@ namespace WpfSwitchClient
                 BaseAddress = new Uri(String.Format("http://{0}:9090/", Environment.MachineName))
             };
 
-            var window = new MainWindow(new SwitchViewModel(new SwitchService(client)));
-            //var window = new MainWindow(new SwitchHyperViewModel(client));
+            //var window = new MainWindow(new SwitchViewModel(new SwitchService(client)));
+            var window = new MainWindow(new SwitchHyperViewModel(client));
             window.Show();
         }
     }
